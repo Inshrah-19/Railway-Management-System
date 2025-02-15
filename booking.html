@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<head>
+  <title>Ticket Details for Booking</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1><span class="title-text">Speedy Rails</span></h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutus.html">About</a></li>
+        <li><a href="booking.html">Book a Ticket</a></li>
+        <li><a href="schedule.html">View Schedules</a></li>
+        <li><a href="cancel.html">Cancel a Ticket</a></li>
+        <li><a href="location.html">Train Stations</a></li>
+        <li><a href="review.html">Review</a></li>
+        <li><a href="help.html">Support Center</a></li>
+        <li><a href="policy.html">Privacy Policy</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="booking" class="container">
+    <div class="content">
+    <h2>Enter Ticket Details</h2>
+    <form id="ticket-form">
+      <label for="fullname">Full Name:</label>
+      <input type="text" id="fullname" name="fullname" required><br><br>
+      
+      <label for="from">From:</label>
+      <select id="from" name="from" required>
+        <option value="">Select From</option>
+        <option value="Karachi">Karachi</option>
+        <option value="Lahore">Lahore</option>
+        <option value="Peshawar">Peshawar</option>
+        <option value="Mianwali">Mianwali</option>
+        <option value="Quetta">Quetta</option>
+        <option value="Multan">Multan</option>
+      </select><br><br>
+      
+      <label for="to">To:</label>
+      <select id="to" name="to" required>
+        <option value="">Select To</option>
+        <option value="Lahore">Lahore</option>
+        <option value="Karachi">Karachi</option>
+        <option value="Rawalpindi">Rawalpindi</option>
+      </select><br><br>
+      
+      <label for="train">Select Train:</label>
+      <select id="train" name="train" required>
+        <option value="">Select Train</option>
+      </select><br><br>
+      
+      <label for="date">Date:</label>
+      <input type="date" id="date" name="date" required><br><br>
+      
+      <label for="time">Time:</label>
+      <input type="time" id="time" name="time" required><br><br>
+      
+      <label for="seat">Number of Seats:</label>
+      <input type="number" id="seat" name="seat" required><br><br>
+      
+      <label for="payment">Payment Method:</label>
+      <select id="payment" name="payment" required>
+        <option value="credit_card">Credit Card</option>
+        <option value="debit_card">Debit Card</option>
+        <option value="Jazz Cash">Jazz Cash</option>
+        <option value="Easy Paisa">Easy Paisa</option>
+        <option value="Paypal">Paypal</option>
+      </select><br><br>
+      
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2024 Speedy Rails. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    const trainOptions = {
+      'Karachi-Lahore': ['Tezgam', 'Karakoram Express', 'Night Coach', 'Fareed Express'],
+      'Lahore-Karachi': ['Green Line', 'Shalimar Express', 'Pak Business Express'],
+      'Peshawar-Karachi': ['Khyber Mail', 'Awam Express'],
+      'Mianwali-Rawalpindi': ['Thal Express'],
+      'Quetta-Rawalpindi': ['Jaffar Express'],
+      'Multan-Lahore': ['Bahauddin Zakariya Express'],
+      'Quetta-Lahore': ['Sandeman Express'],
+    };
+
+    document.getElementById('from').addEventListener('change', updateTrains);
+    document.getElementById('to').addEventListener('change', updateTrains);
+
+    function updateTrains() {
+      const fromCity = document.getElementById('from').value;
+      const toCity = document.getElementById('to').value;
+      const trainSelect = document.getElementById('train');
+      trainSelect.innerHTML = '<option value="">Select Train</option>';
+
+      if (fromCity && toCity) {
+        const routeKey = `${fromCity}-${toCity}`;
+        if (trainOptions[routeKey]) {
+          trainOptions[routeKey].forEach(train => {
+            const option = document.createElement('option');
+            option.value = train;
+            option.textContent = train;
+            trainSelect.appendChild(option);
+          });
+        }
+      }
+    }
+
+    document.getElementById('ticket-form').addEventListener('submit', function(event) {
+      event.preventDefault(); 
+
+      const seatCount = document.getElementById('seat').value;
+      let discount = 0;
+
+      if (seatCount >= 5) {
+        discount = 20;
+      } else if (seatCount >= 3) {
+        discount = 10;
+      } else if (seatCount >= 2) {
+        discount = 5;
+      }
+
+      let message = 'Congratulations, your ticket has been confirmed!';
+      if (discount > 0) {
+        message += ` You received a ${discount}% discount for booking ${seatCount} seats.`;
+      }
+
+      alert(message);
+    });
+  </script>
+</body>
+</html>
